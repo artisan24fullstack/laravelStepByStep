@@ -139,3 +139,41 @@ Error Migration
  ```php 
 php artisan migrate:rollback --step=1
 ```
+
+
+## First Controller
+
+ ```php 
+php artisan make:controller Admin\HikeController
+
+
+   INFO  Controller [\hike\app\Http\Controllers\Admin\HikeController.php] created successfully.
+
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class HikeController extends Controller
+{
+    //
+}
+
+```
+- remove folder Admin and file HikeController.php
+
+ ```php 
+php artisan make:controller Admin\HikeController -r
+```
+
+-r option in the php artisan make:controller command stands for "resource."
+
+--resource: The --resource option tells Laravel to generate a controller with methods for handling every standard RESTful action (Create, Read, Update, Delete). 
+
+- This includes methods like index(), show(), store(), update(), and destroy(). 
+
+- These methods correspond to different routes that can be defined in your web routes file (web.php) to handle CRUD operations for the "Hike" resource.
+
+
