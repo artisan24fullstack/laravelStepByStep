@@ -35,23 +35,28 @@ class HikeController extends Controller
      */
     public function store(HikeFormRequest $request)
     {
-        //
+        $hike = Hike::create($request->validated());
+        return to_route('admin.hike.index')->with('success', 'Le hike a bien été créé');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Hike $hike)
     {
-        //
+        return View('admin.hike.form', [
+            'hike' => $hike,
+
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(HikeFormRequest $request, Hike $hike)
     {
-        //
+        $hike->update($request->validated());
+        return to_route('admin.hike.index')->with('success', 'Le hike a bien été modifié');
     }
 
     /**

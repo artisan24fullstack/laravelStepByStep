@@ -24,8 +24,8 @@
                 <tr>
 
                     <td>{{ $hike->name }}</td>
-                    <td>{{ $hike->distance }}km</td>
-                    <td>{{ $hike->duration }}min</td>
+                    <td>{{ $hike->distance }} km</td>
+                    <td>{{ $hike->duration }} min</td>
                     <td>{{ $hike->elevation_gain }}</td>
                     <td>{{ $hike->description }}</td>
 

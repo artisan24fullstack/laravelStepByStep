@@ -334,7 +334,7 @@ use Illuminate\View\View;
     }
 ```
 
-- modify function store in Controller for error
+- modify function store in Controller for error HikeFormRequest $request
 
 ```php 
 
@@ -350,3 +350,69 @@ use App\Http\Requests\Admin\HikeFormRequest;
 
 
 - add folder shared with components (flash, input, checkbox, select )
+
+
+## Add protected $fillable in Models hike
+
+- The $fillable property within a model class is used to specify which fields (columns) 
+of the database table associated with that model can be mass assigned. 
+
+- Mass assignment is a feature in Laravel that allows you to create or update multiple model attributes at once using an array of values.
+```php 
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Hike extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'distance',
+        'duration',
+        'elevation_gain',
+        'description',
+    ];
+}
+
+```
+
+Error Add [name] to fillable property to allow mass assignment on [App\Models\Hike].
+
+## add function store, edit and update
+
+```php 
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(HikeFormRequest $request)
+    {
+        $hike = Hike::create($request->validated());
+        return to_route('admin.hike.index')->with('success', 'Le hike a bien été créé');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Hike $hike)
+    {
+        return View('admin.hike.form', [
+            'hike' => $hike,
+
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(HikeFormRequest $request, Hike $hike)
+    {
+        $hike->update($request->validated());
+        return to_route('admin.hike.index')->with('success', 'Le hike a bien été modifié');
+    }
+
+```

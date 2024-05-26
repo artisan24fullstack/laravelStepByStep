@@ -44,6 +44,7 @@
 
     <div class="container mt-5">
 
+        @include('shared.flash')
 
         @yield('content')
 
