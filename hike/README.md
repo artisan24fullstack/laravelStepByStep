@@ -385,6 +385,9 @@ Error Add [name] to fillable property to allow mass assignment on [App\Models\Hi
 
 ## add function store, edit and update
 
+
+- add @include('shared.flash') in layout (admin.blade.php)
+
 ```php 
     /**
      * Store a newly created resource in storage.
