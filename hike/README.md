@@ -45,3 +45,70 @@ INFO  Running migrations.
 - SQLite Viewer v0.4.14 Florian Klampfer
 - SQLite3 Editor v1.0.187 yy0931
 
+## Step First Model and create migration
+
+```php 
+php artisan make:model -m Hike
+
+   INFO  Model [\hike\app\Models\Hike.php] created successfully.
+
+   INFO  Migration [hike\database\migrations/2024_05_26_063941_create_hikes_table.php] created successfully.
+
+```
+-m: The -m flag indicates that you want to also create a migration file along with the model. 
+
+- Migrations are like version control for your database, allowing you to modify your database schema over time in a structured and organized way. 
+
+- Each migration file contains instructions on how to alter the database schema, such as creating tables, adding columns, etc.
+
+
+Folder Models \hike\app\Models\Hike.php
+
+
+```php 
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Hike extends Model
+{
+    use HasFactory;
+}
+
+```
+Folder Models Migration
+
+```php 
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('hikes', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('hikes');
+    }
+};
+
+
+```
