@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Hike;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\HikeFormRequest;
 use Illuminate\View\View;
 
 class HikeController extends Controller
@@ -24,13 +25,15 @@ class HikeController extends Controller
      */
     public function create()
     {
-        //
+        return View('admin.hike.form', [
+            'hike' => new Hike(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(HikeFormRequest $request)
     {
         //
     }

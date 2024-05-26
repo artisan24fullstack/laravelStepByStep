@@ -294,7 +294,7 @@ and the value specifies one or more validation rules that the corresponding fiel
  
  - remove function show() in Admin HikeController (route ->except(['show']))
 
-## Create Views and add function index Controller
+## Create Views and add function index in Controller
 
 - add index in HikeController
 
@@ -320,3 +320,33 @@ use Illuminate\View\View;
 
 2) - create a sub folder (hike) 
 - with file index.blade.php  (list hike in admin)
+
+
+## Add function create in Controller, add file (form) and folder shared with
+
+- add function create in Controller
+```php 
+    public function create()
+    {
+        return View('admin.hike.form', [
+            'hike' => new Hike(),
+        ]);
+    }
+```
+
+- modify function store in Controller for error
+
+```php 
+
+use App\Http\Requests\Admin\HikeFormRequest;
+
+   public function store(HikeFormRequest $request)
+    {
+        //
+    }
+```
+
+- add file (form.blade.php) in hike 
+
+
+- add folder shared with components (flash, input, checkbox, select )
