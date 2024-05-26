@@ -79,7 +79,7 @@ class Hike extends Model
 }
 
 ```
-Folder Models Migration
+Folder Models Migration create_hikes_table
 
 ```php 
 <?php
@@ -109,6 +109,33 @@ return new class extends Migration
         Schema::dropIfExists('hikes');
     }
 };
+```
+## Step DB in Model Hike
 
+- change Model Hike in 
 
+```php 
+    public function up(): void
+    {
+        Schema::create('hikes', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->decimal('distance', 8, 2);
+            $table->integer('duration'); // Assuming duration is in minutes
+            $table->integer('elevation_gain');
+            $table->text('description')->nullable(); // Optional description field
+            $table->timestamps();
+        });
+    }
+
+```
+ and 
+
+ ```php 
+php artisan migrate
+```
+
+Error Migration 
+ ```php 
+php artisan migrate:rollback --step=1
 ```
