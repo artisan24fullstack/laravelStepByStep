@@ -217,3 +217,106 @@ php artisan route:list
   GET|HEAD        admin/hike/{hike}/edit ................................. admin.hike.edit › Admin\HikeController@edit
 ```
 
+## First Request 
+
+```php 
+php artisan make:request Admin\HikeFormRequest
+
+   INFO  Request [\hike\app\Http\Requests\Admin\HikeFormRequest.php] created successfully.
+
+<?php
+
+namespace App\Http\Requests\Admin;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class HikeFormRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            //
+        ];
+    }
+}
+```
+
+
+- change HikeFormRequest in 
+
+### Authorization Method change in true
+
+- The authorize method is used to determine if the current user is authorized to make the request. 
+- Returning false here means that by default, users are not allowed to submit forms using this request.
+
+### Fields and Their Validation Rules
+
+- The rules() method you've shown is part of a Laravel form request class, which is used to define validation rules for incoming HTTP requests. 
+- This method returns an array where each key corresponds to a field in the request payload, 
+and the value specifies one or more validation rules that the corresponding field must adhere to. 
+- Let's break down the validation rules you've provided:
+```php 
+
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'distance' => 'required|numeric|min:0',
+            'duration' => 'required|integer|min:0',
+            'elevation_gain' => 'required|integer|min:0',
+            'description' => 'required|string',
+        ];
+    }
+```
+ 
+ - remove function show() in Admin HikeController (route ->except(['show']))
+
+## Create Views and add function index Controller
+
+- add index in HikeController
+
+```php 
+
+use App\Models\Hike;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\View\View;
+
+    public function index()
+    {
+        return View('admin.hike.index', [
+            'hikes' => Hike::orderBy('created_at', 'desc')->paginate(25)
+        ]);
+    }
+```
+
+- add Admin layout 
+
+1) - create a folder (admin) in views 
+- with file admin.blade.php  (layout admin)
+
+2) - create a sub folder (hike) 
+- with file index.blade.php  (list hike in admin)

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Hike;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\View\View;
 
 class HikeController extends Controller
 {
@@ -12,7 +14,9 @@ class HikeController extends Controller
      */
     public function index()
     {
-        //
+        return View('admin.hike.index', [
+            'hikes' => Hike::orderBy('created_at', 'desc')->paginate(25)
+        ]);
     }
 
     /**
@@ -27,14 +31,6 @@ class HikeController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
     {
         //
     }
