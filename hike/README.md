@@ -131,12 +131,12 @@ return new class extends Migration
 ```
  and 
 
- ```php 
+```php 
 php artisan migrate
 ```
 
 Error Migration 
- ```php 
+```php 
 php artisan migrate:rollback --step=1
 ```
 
@@ -176,4 +176,44 @@ php artisan make:controller Admin\HikeController -r
 
 - These methods correspond to different routes that can be defined in your web routes file (web.php) to handle CRUD operations for the "Hike" resource.
 
+## Folder routes and file web.php
+
+- head file add 
+
+```php 
+use App\Http\Controllers\Admin\HikeController;
+```
+
+```php 
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('hike', HikeController::class)->except(['show']);
+});
+```
+
+```php 
+php artisan route:list
+```
+- In your terminal will display a table with the following columns:
+
+> Domain: 
+- The domain for the route.
+> Method: 
+- The HTTP method(s) the route responds to (e.g., GET, POST).
+> URI: 
+- The URI pattern the route matches.
+> Name: 
+- The name of the route, if one has been assigned.
+> Action: 
+- The controller action that handles the request.
+> Middleware: 
+- Any middleware applied to the route.
+
+```php 
+  GET|HEAD        admin/hike ........................................... admin.hike.index › Admin\HikeController@index
+  POST            admin/hike ........................................... admin.hike.store › Admin\HikeController@store
+  GET|HEAD        admin/hike/create .................................. admin.hike.create › Admin\HikeController@create
+  PUT|PATCH       admin/hike/{hike} .................................. admin.hike.update › Admin\HikeController@update
+  DELETE          admin/hike/{hike} ................................ admin.hike.destroy › Admin\HikeController@destroy
+  GET|HEAD        admin/hike/{hike}/edit ................................. admin.hike.edit › Admin\HikeController@edit
+```
 

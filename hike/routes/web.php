@@ -19,5 +19,5 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    //Route::resource('hike', HikeController::class)->except(['show']);
+    Route::resource('hike', HikeController::class)->except(['show']);
 });
