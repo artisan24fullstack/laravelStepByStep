@@ -419,3 +419,27 @@ Error Add [name] to fillable property to allow mass assignment on [App\Models\Hi
     }
 
 ```
+
+## add function delete
+
+> folder hike > file (form.blade.php) and code next
+
+```php 
+    <form action="{{ route('admin.hike.destroy', $hike) }}" method="post">
+
+        @csrf
+        @method('delete')
+        <button class="btn btn-danger">Supprimer</button>
+    </form>
+```
+
+```php 
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Hike $hike)
+    {
+        $hike->delete();
+        return to_route('admin.hike.index')->with('success', 'Le hike a bien été supprimé');
+    }
+```
