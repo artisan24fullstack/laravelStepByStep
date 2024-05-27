@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\HikeController;
 
 /*
@@ -14,9 +15,8 @@ use App\Http\Controllers\Admin\HikeController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index']);
+
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('hike', HikeController::class)->except(['show']);

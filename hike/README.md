@@ -443,3 +443,164 @@ Error Add [name] to fillable property to allow mass assignment on [App\Models\Hi
         return to_route('admin.hike.index')->with('success', 'Le hike a bien été supprimé');
     }
 ```
+
+## FRONT
+
+> Http\Controllers
+
+## create HomeController
+
+```php 
+php artisan make:controller HomeController
+
+   INFO  Controller [\hike\app\Http\Controllers\HomeController.php] created successfully.
+```
+
+
+> routes\web.php 
+
+## replace page welcome 
+
+```php 
+Route::get('/', function () {
+    return view('welcome');
+});
+```
+
+- by and add use App\Http\Controllers\HomeController;
+
+```php 
+(head page web.php) use App\Http\Controllers\HomeController;
+
+Route::get('/', [HomeController::class, 'index']);
+
+```
+
+- The line Route::get('/', [HomeController::class, 'index']); 
+
+In Laravel is a route definition that maps a GET request to the root URL (/) 
+of your application to a specific action within a controller. Here's a breakdown of what each part means:
+
+> Route::get: 
+- This specifies that the route responds to HTTP GET requests. 
+- Laravel supports various HTTP verbs such as GET, POST, PUT, DELETE, etc., and you can define routes for these verbs using methods like Route::get, Route::post, Route::put, etc.
+
+> '/': 
+- This is the URI pattern that the route matches. 
+- A / indicates the root of your application. 
+- So, this route will match when someone visits the homepage of your website.
+
+> [HomeController::class, 'index']: 
+- This is an array where the first element is the controller class that handles the request, 
+and the second element is the method within that controller that should be executed. 
+
+- In this case, HomeController::class refers to the (HomeController class), and ('index') refers to the index method within that class.
+
+> HomeController::class:
+- This uses the fully qualified class name syntax to refer to the HomeController. 
+- It ensures that Laravel knows exactly which class to use, even if there might be multiple classes named HomeController in different namespaces.
+
+> 'index': 
+- This is the name of the method within the HomeController that should be invoked when the route is matched. 
+- The index method typically serves as the entry point for displaying a listing of resources, such as a home page or a list of items.
+
+-----------------------------------------------------------------------
+
+## create function index in HomeController
+
+```php 
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Hike;
+use Illuminate\Http\Request;
+
+class HomeController extends Controller
+{
+    public function index()
+    {
+        $hikes = Hike::orderBy('created_at', 'desc')->limit(4)->get();
+        return view('home', ['hikes' => $hikes]);
+    }
+}
+```
+
+
+> Model: Hike
+- Hike refers to a model class in Laravel. 
+- Models represent tables within your database, and they allow you to interact with those tables using object-oriented syntax. 
+- In this case, Hike likely corresponds to a table named hikes.
+
+> Query Components
+- orderBy('created_at', 'desc')
+
+> Order By: 
+- This method sorts the results of the query based on the created_at column. 
+- The created_at column typically stores the timestamp when each record was inserted into the database.
+
+> Direction: 
+- The 'desc' argument specifies that the sorting should be done in descending order. 
+- This means the records will be ordered from newest to oldest based on their creation time.
+
+> limit(4)
+- This method restricts the number of records returned by the query to the first 4 records after applying the orderBy clause.
+- Since the records are ordered by created_at in descending order, this effectively limits the query to the 4 most recently created records.
+
+> get()
+- Finally, the get() method executes the query and retrieves the results. 
+- Without calling get(), the query would just build up the SQL statement but wouldn't actually run it against the database.
+
+> Function: view() 
+- is a helper function provided by Laravel that generates a view. 
+- A view in Laravel is a template file that contains HTML markup. 
+- It's responsible for presenting data to the user in a structured format.
+
+> View Name: 'home'
+- specifies the name of the view file that should be rendered. 
+- Laravel looks for this file in the resources/views directory (home.blade.php). 
+- So, the actual path to the view would be resources/views/home.blade.php unless otherwise configured.
+
+> Data Passing: ['hikes' => $hikes]
+- This part of the function call is an associative array that maps keys to values. 
+- In this case, the key is 'hikes', and the value is the variable $hikes.
+
+## create layout base and page home
+
+> base.blade.php
+- create layout base (front application)
+
+> home.blade.php
+- create page home (listing hikes) with a loop foreach and a include ('hike.card')
+
+```php 
+@foreach ($hikes as $hike)
+    <div class='col'>
+        @include('hike.card')
+    </div>
+@endforeach
+```
+
+> hike card.blade.php
+- component card with info 
+
+```php 
+<div class="card">
+    <div class='card-body'>
+        <h5>
+            <a href="/">{{ $hike->name }}</a>
+        </h5>
+        <p class='card-text'>
+            {{ $hike->distance }} km - {{ $hike->duration }} min
+        </p>
+        <p class='card-text'>
+            {{ $hike->description }}
+        </p>
+        <div class="text-primary" style="font-size: 1.4rem;">
+            {{ $hike->elevation_gain }}
+        </div>
+
+    </div>
+</div>
+
+```
