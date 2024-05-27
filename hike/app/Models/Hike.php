@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Hike extends Model
 {
@@ -16,4 +17,12 @@ class Hike extends Model
         'elevation_gain',
         'description',
     ];
+
+    /**
+     * permet  de créer un slug à partir du name
+     */
+    public function getSlug()
+    {
+        return Str::slug($this->name);
+    }
 }

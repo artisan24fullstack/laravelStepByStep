@@ -604,3 +604,121 @@ class HomeController extends Controller
 </div>
 
 ```
+
+## Detail hike (HikeController with show and Model with slug)
+
+> http\Controller
+- create HikeController for front application (different admin\HikeController )
+
+```php 
+php artisan make:controller HikeController
+```
+
+- with function show and $hike->getSlug();
+```php 
+public function show(string $slug, Hike $hike)
+    {
+        $expectedSlug = $hike->getSlug();
+
+        if ($slug !== $expectedSlug) {
+            return to_route('hike.show', ['slug' => $expectedSlug, 'hike' => $hike]);
+        }
+
+        return view('hike.show', [
+            'hike' => $hike
+        ]);
+    }
+```
+
+> Models\hike
+
+- add function getSlug()
+- (head) add use Illuminate\Support\Str;
+
+```php 
+use Illuminate\Support\Str;
+
+    /**
+     * permet  de créer un slug à partir du name
+     */
+    public function getSlug()
+    {
+        return Str::slug($this->name);
+    }
+```
+
+> routes\web
+
+- add route get hikes/{slug}-{hike} with regex (id, slug)
+- (head) use App\Http\Controllers\HikeController as PublicHikeController;
+
+```php 
+use App\Http\Controllers\HikeController as PublicHikeController;
+
+$idRegex = '[0-9]+';
+$slugRegex = '[0-9a-z\-]+';
+
+Route::get('/hikes/{slug}-{hike}', [PublicHikeController::class, 'show'])->name('hike.show')->where([
+    'hike' => $idRegex,
+    'slug' => $slugRegex
+]);
+```
+
+> resources\views\hike
+
+- modify page card ()
+
+```php 
+    <a href="{{ route('hike.show', ['slug' => $hike->getSlug(), 'hike' => $hike]) }}">{{ $hike->name }}</a>
+```
+
+
+- add page show (show.blade.php)
+
+```php 
+@extends('base')
+
+@section('title', $hike->name)
+
+
+@section('content')
+    <div class="container mt-5">
+
+        <h1>{{ $hike->name }} </h1>
+
+        <div class="text-primary" style="font-size: 1.4rem;">
+            {{ $hike->description }}
+        </div>
+
+        <hr>
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-8">
+                    <h2>Caractéristiques</h2>
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Distance</td>
+                            <td>{{ $hike->distance }} km</td>
+                        </tr>
+                        <tr>
+                            <td>Duration</td>
+                            <td>{{ $hike->duration }} min</td>
+                        </tr>
+                        <tr>
+                            <td>Elevation gain</td>
+                            <td>{{ $hike->elevation_gain }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-4">
+                    <h2>Tags</h2>
+                    <ul class="list-group">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+```

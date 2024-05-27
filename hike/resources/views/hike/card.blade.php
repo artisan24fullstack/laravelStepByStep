@@ -1,7 +1,7 @@
 <div class="card">
     <div class='card-body'>
         <h5>
-            <a href="/">{{ $hike->name }}</a>
+            <a href="{{ route('hike.show', ['slug' => $hike->getSlug(), 'hike' => $hike]) }}">{{ $hike->name }}</a>
         </h5>
         <p class='card-text'>
             {{ $hike->distance }} km - {{ $hike->duration }} min
